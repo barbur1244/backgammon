@@ -1,5 +1,5 @@
-/* Keeps the game working without internet. Version: 20261124-103535 */
-const CACHE = 'backgammon-20261124-103535';
+/* Keeps the game working without internet. Version: 20261124-104842 */
+const CACHE = 'backgammon-20261124-104842';
 const CORE = ['./', './index.html', './firebase.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
 
 self.addEventListener('install', e => {
