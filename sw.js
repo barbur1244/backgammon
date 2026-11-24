@@ -1,6 +1,6 @@
-/* Keeps the game working without internet. Version: 20261124-095840 */
-const CACHE = 'backgammon-20261124-095840';
-const CORE = ['./', './index.html', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
+/* Keeps the game working without internet. Version: 20261124-103535 */
+const CACHE = 'backgammon-20261124-103535';
+const CORE = ['./', './index.html', './firebase.js', './manifest.webmanifest', './icon-192.png', './icon-512.png', './icon-maskable-512.png', './apple-touch-icon.png', './favicon-32.png'];
 
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(CORE)).then(() => self.skipWaiting()));
@@ -19,7 +19,10 @@ self.addEventListener('fetch', e => {
     }).catch(() => caches.match('./index.html')));
     return;
   }
-  // icons and fonts: saved copy first, otherwise download and keep it
+  // only our own files and the fonts are kept; the game server's traffic always goes straight through
+  const url = new URL(req.url);
+  if (url.origin !== location.origin && url.hostname !== 'fonts.googleapis.com' && url.hostname !== 'fonts.gstatic.com') return;
+  // icons, scripts and fonts: saved copy first, otherwise download and keep it
   e.respondWith(caches.match(req).then(hit => hit || fetch(req).then(res => {
     if (res.ok || res.type === 'opaque') { const copy = res.clone(); caches.open(CACHE).then(c => c.put(req, copy)); }
     return res;
